@@ -1,0 +1,378 @@
+_______________________________________________________
+Introduction to Big-O notation 
+_______________________________________________________
+This is going to be a big topic about different data structures and algorithms 
+
+Goals:
+1. Understand the concept and need for Big O 
+2. Analyze time complexity
+3. Demonstrate time complexity 
+
+
+lets say you all need to write a function that needs to reverse a string 
+
+how would we know which approach is best ? 
+how do you actually know that something is good? in terms of efficiency . how fast something runs or something 
+
+the whole idea is that we need some sort of system to categorize the performance of code 
+
+it is important to be able to Understand and talk about the performance of your code 
+
+useful for discussing trade-offs between different approaches 
+
+having the understanding can help you improve your code. if you can understand what makes something inefficient and something is slowing down ,
+just being able to understand big O can help you come up with new implementations 
+
+less important: comes up in interviews 
+
+you might be asked to implement some algorithm or how some data structure performs 
+
+_______________________________________________________
+Problem with timers
+_______________________________________________________
+
+Another example 
+
+calculate the sum of numbers from 1 to some number n that is an argument it accepts 
+
+
+what does better mean?
+
+is it faster?
+less memory intensive
+more readable?
+let us focus on speed 
+
+readability usually takes a backseat to speed. how long does something take to execute 
+
+why dont we just time them? 
+
+there is a tool that helps to time the functions and we can see that results can differ and arent exactly consistent when using timers 
+
+different machines can record different times 
+
+speed measurements are not precise enough 
+
+there are a lot of really nice libraries to 'benchmark' your code 
+they run a bunch of timers and they give you a report of your code 
+
+instead we count the number of simple operations that the computer has to perform 
+instead of actually timing things we can just count the number of simple operations 
+
+if we can compare this function does 4 operations vs this one that does 12 operations 
+
+_______________________________________________________
+counting operations
+_______________________________________________________
+
+while timing may have a place , it is not the ideal way of assessing the speed of code 
+
+we are going to be counting the operations 
+
+function addUpToSecond(n){
+    return n*(n+1)/2;
+}
+
+this one has 3 operations 
+1 multiplication, 1 addition, and 1 division 
+
+function addUpToFirst(n){
+    let total = 0;
+
+    for (let i =1; i <= n; i++){
+        total +=1;
+    }
+    return total;
+}
+
+its kind of hard to get an exact count of a for loop, at the very elast we have two additions happening in the for loop and depending on how many times we iterate through it can be different, and then does evaluation count as a simple operation 
+
+so in the addUpToSecond we only do 3 operations no matter the size of n 
+where as in the for loop, the number of operations is going to baloon up , roughly to the size of the number that we throw in 
+
+Counting is hard, especially when you get a bunch of math going 
+regardless of the exact number as the size of n grows in the loop function will grow roughly in proportion with n 
+
+we can use this idea to measure speed allocation of algorithms 
+
+_______________________________________________________
+General Trends
+_______________________________________________________
+
+Introducing... Big O 
+
+we are just categorizing all algorithms and different notations 
+
+big o notation is a way to formalize fuzzy counting 
+- can use to talk about how the runtime algorithm grows as inputs grow 
+
+- we dont care about the details, only trends 
+
+we just want to figure roughly how our algorithms perform 
+
+big o notation is just concerned with the general trend of the operation as the size of n grows 
+
+_______________________________________________________
+Big O for real 
+_______________________________________________________
+
+An algorithm is O(f(n)) if number of simple operations is eventually less than a constant times f(n) as n increases 
+
+big O is all about coming up with some function to discuss the general trend of the lines 
+
+f(n) could be linear (f(n)=n)
+f(n) could be quadratic (f(n)=n^2)
+f(n) could be constant (f(n)=1)
+f(n) could be something entirely different 
+
+we saw three examples 
+
+the linear one describes the looping counter 
+the quadratic describes the print pairs of numbers 
+
+and the constant time 1 descirbes the second counter 
+
+it was always 3 operations and therefore we can call it O(1)
+
+O(1) is a way of saying that as the input grows the time is usually the same 
+you could call it a constant function 
+
+the linear one can be described as a linear function 
+charting the size of the input vs the amount of time it takes akan O(n)
+
+another example 
+print all pairs 
+
+it is an O(n) operation inside of an O(n) operation thats why we end up with a squared trend 
+
+if we wanted to represent that relationship we could say this algorithm runs in O(n^2) or quadratic time 
+we can see that even when we didnt even double the n, it more than  tripled the time 
+it is not a good big O notation for a function 
+
+remember we are just describing the input size and the time something takes to finish 
+
+what is that trend line going to look like 
+
+as n grows much much bigger it can grow linearly , it can be constant, it can be quadratic which is the current worst case for us 
+
+_______________________________________________________
+Worst case
+_______________________________________________________
+we always look at the worst case scenario to get an accurate metric
+
+over time we will learn to identify and assign a big o notation based off of some key clues 
+we are trying to come up with a big picture trend 
+we dont need to crunch numbers 
+
+we have a function 
+
+function allEven(nums){
+    for(var i = 0; i < nums.length;i++){
+        if (nums[i]%2 !== 0){
+            return false
+        }
+    }
+    return true 
+}
+
+in general we would expect this to be O(n) becausee we have a loop and that looping depends on how big n is
+but what about the if statement? 
+
+if the 5th number is odd then it stops counting the array 
+
+you might think that the big O notation would be difficult to describe here but, we only care about the absolute worst case scenario 
+
+the worst case for this function is that we pass in an array with all even numbers and then we have to loop over the maximum number of times 
+
+in that worst case, as the size of n grows, the number of times that operation needs to complete grows in proportion of n 
+
+so we would say that this function is O(n) even though it might not always take that long , if we look at that grand trend , it is O of n O(n) 
+
+worst case only 
+be a pessimist only . 
+
+everything is as bad as you think , the world is ending 
+
+_______________________________________________________
+Simplifying Big o
+_______________________________________________________
+
+We are concerned with the worst case performance 
+
+we always simplify our numbers 
+
+we are not looking for some perfect equation 
+
+constants do not matter 
+
+if we said that it is always 3 operations, as long as the operations are always the same no matter how big n is then we are not going to care about the size of the constant 
+
+25n + 7 
+we just simplify to O of n 
+
+smaller terms do not matter 
+
+n^2 + n 
+
+we would get rid of that n 
+and we would just call that n^2 
+
+because if we compared them they would look almost exactly the same when zoomed out 
+
+helpful hints 
+
+arithmetic operations are considered constant 
+
+same number of operations, same number of time regardless of the input size 
+
+if we wanted to be specific we could say there is 3 operations but its a constant so we dont care so we want to be O(1) as that is the simplest version of that 
+
+variable assignment is constant
+if we say
+function makeVars(n){
+    const n1 = n;
+    const n2 = n;
+    const n3 = n;
+}
+
+just like before doing math
+it doesnt matter how big n is 
+
+there is no real impact on the amount of time it takes to store 10 or a million 
+
+accessing elements in array by index or object by key is constant 
+
+this does not mean that everything with an array is constant 
+
+function getThirdEl(arr){
+    return arr[3]
+}
+
+the size of the array does not matter because if we have the index we can very very quickly find the corresponding value 
+
+obj[]
+same thing with objects 
+
+loops- length of the loop times complexity of whatever happens in the loop 
+
+function squareAll(arr){
+    for(let i = 0; i < arr.length; i++){
+        return arr[i]* arr[i]
+    }
+}
+this would be linear O(n) i think because the constant operations dont matter which is just the inside thing which is 1 operation and so we can assume this is O(n)
+
+loop n times * 1 
+
+so that simplifies to O(n)
+
+even if we added in more simple operations we go back down to O(n)
+doesnt matter how big the array is we boil it down to O(n)
+
+another example 
+
+function printAllPairs(n){
+    for(let i = 0; i < n; i++){
+        for(let j = 0; j < n; j++){
+            console.log(i,j)
+        }
+    }
+}
+
+if we call printAllPairs it is going to just call all of the pairs of numbers 
+
+so loops we would multiply O(n) * O(n)
+
+that is O(n^2)
+
+these kinds of functions scale really quickly so best to avoid if at all possible 
+
+_______________________________________________________
+Big O and Logs
+_______________________________________________________
+
+There are some common run times charts 
+
+of the ones we have seen already 
+
+O(1) is good , O(n) is fair and they get worse and worse form there 
+
+what is a log actually 
+
+logarithms are a thing in math 
+
+when you write log you are actually supposed tohave a base 
+
+we are in base 2 (think about 0s and 1s)
+
+log base2 of 8 = 3(2 to the power of what gives me 8?)
+
+in general, the logarithm of a number roughly measures the number of times you can divide that number by 2 before you get a value thats less than or equal to 1 
+
+in Big O we dont care about the base 
+
+he shows a table that contains what the difference is with an n input of 100 
+
+Must knows for now:
+a loop does not eman its o(n) we could have a loop that doesnt depend on the size of n 
+a loop in a loop does not mean its o n^2 
+
+best run time for sorting is O(n * log n) also reffered to as n log n 
+
+_______________________________________________________
+Space Complexity
+_______________________________________________________
+
+the whole time we have been talking about time complexity
+but we can also use big O to explain space complexity 
+
+how much memory is needed as the size of an input increases
+
+less talked about but the principle is the same 
+
+rules of thuimbs in js 
+
+most primitive data types get allocated the same amount of space , constant space 
+
+strings : O(n) space (where n is the string length)
+reference types: generally O(n) where n is the length of array or keys in object 
+
+function sum(nums){
+    let total = 0;
+
+    for (let i = 0; i < nums.length; i++){
+        total += nums[i];
+    }
+    return total ;
+
+}
+
+O(1) space 
+
+so here we have a space complexity of O(1) because it takes the same amount of time to store a number, but we have a time complexity of O(n)
+
+function double(nums){
+    let doubleNums = [];
+    for(let i = 0; i < nums.length; i++){
+        doubledNums.push(2 * nums[i])
+    }
+}
+
+here we have an empty array, we loop over an input array and we double it and we add it into the other array 
+
+this is O(n) because we grow our array roughly in proportion with the input size of the array 
+
+recap
+
+it is worth it to slow things down and do some rewatch if you can bare to, 
+it is going to give us a foundation for being able to talk and compare different algorithms and we can understand if one is good and one is horrible 
+
+Big ) is about being able to understand the time and space complexity 
+we dont care about precision 
+we want general trends 
+
+depends only on algorthm not hardware used to run code 
+
+the same number of operations will need to be run 
+
+big o notation is everywhere , so get lots of practice 
