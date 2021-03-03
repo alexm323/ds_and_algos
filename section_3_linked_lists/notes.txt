@@ -1,0 +1,426 @@
+Goals
+Describe what an “abstract data type” means
+Compare different types of arrays
+Define singly and doubly linked lists
+Compare performance characteristics of arrays and lists
+Implement linked lists in JavaScript
+
+
+__________________________________________________________________
+Arrays and linked lists
+__________________________________________________________________
+
+A list is an abstract data type 
+
+set of requirements 
+
+keep multiple items
+can insert or delete items at any position 
+can contain duplicates 
+preserves order of items 
+
+-arrays are examples of a list 
+some data structures may not meet very requirement 
+A list is an abstract type that can be achieved in different ways 
+
+Lets talk about arrays 
+__________________________________________________________________
+Array Big O 
+__________________________________________________________________
+
+Arrays in javascript and how they actually work 
+
+Arrangement of items at equally spaced addresses in memory 
+the pieces are taking up the same amount of space 
+traditionally in lnaguage like C or C++ this is how it works 
+where an equal amount of space is needed 
+
+Array runtimes 
+
+retrieving by index is very fast 
+O(1)
+Finding 
+-without the index 
+O(n) linear search , worst case we have to look at every element in the array 
+
+Insertion
+-O(n) because you have to shift everything over 
+
+General Deletion 
+-O(n) 
+
+retrieving by index is very fast 
+
+next up we will talk about direct arrays and vectors 
+
+__________________________________________________________________
+Direct Arrays
+__________________________________________________________________
+
+This kind of array only works if all numbers , all same-length strings 
+
+we can make an array of only 8 bit or 64 bit numbers 
+
+in JS we dont have to put any restrictions on the arrays we use 
+
+in the C example it shows us that it tries to cram in the value into an array of the maximum size it expects 
+
+javascript has a similar type of array called Typed Arrays 
+not frequently used whatsoever 
+
+there are restrictions to what can actually be stored in there 
+once that makes us a typed array it does not have a lot of the standard array methods 
+
+so we can only fit a value that fits within the allocated memory space 
+
+there are restrictions to what can fit in each element
+
+these are limited array but are more efficient 
+
+typical js arrays are indirect arrays ,
+in JS we store the memory of where the actual elements are 
+you dont store numbers and strings in the actual memory allocated in that array , instead we are holding the reference value 
+
+the whole motivation for the Typed arrays is that they are faster 
+video stuff, music data, etc big data 
+
+Indrect arrays since you can store different length things in them 
+its complicated though, some implementations have specialiozed or adaptive structures to handle edge cases like sparse arrays 
+
+a different way to store information in lists , a structure called a linked list 
+
+__________________________________________________________________
+Linked Lists 
+__________________________________________________________________
+There are other ways of storing lists of data 
+
+it is a data structue that we can implement 
+it is a list of different data, each element or node points to the next node or element or it can point to nothing if it is at the end of the list 
+
+can rearrange without having to move other items in memory 
+
+in a typical array we would have to shift everything over 
+
+so in a huge array it would be a huge operation 
+
+in a linked list is we can insert or remove elements incredibly efficiently 
+
+we can write the data structure pretty easily not native in js 
+
+it is just another way of storing data in lists 
+
+the problem with them is that we cannot find the 10th element or something easily 
+
+next lets implement one 
+
+__________________________________________________________________
+Node Class implementation 
+__________________________________________________________________
+A linked list is a collection of nodes and each node points to the next value 
+
+A basic node has two attributes:
+value
+-the infromation the node contains (could be string , int, instance, etc )
+next
+-reference to next node (for last item, this is null)
+
+
+class Node {
+    constructor(val){
+        this.val = val;
+        this.next = null;
+    }
+}
+
+const firstPage = new Node('www.google.com');
+const secondPage = new Node('www.reddit.com');
+const thirdPage = new Node('www.amazon.com');
+
+firstPage.next = secondPage;
+secondPage.next = thirdPage;
+
+this is what we are writing and each one before points to the next 
+this is a simple manual implementation of a linkedList 
+
+another way is to set up a node class 
+
+Then we can add a chain of nodes 
+
+class Node {
+    constructor(val, next=null){
+        this.val = val;
+        this.next = next;
+    }
+}
+
+const firstPage = 
+    new Node('www.google.com',
+        new Node ('www.reddit.com', 
+            new Node('www.amazon.com')));
+
+and that allows us to make the changes all at once 
+
+but it would be nice if we had a linkedList class that gave us some methods we could use 
+
+__________________________________________________________________
+Linked List Class 
+__________________________________________________________________
+All we need is a reference to the first node because each one has a reference to the next one 
+
+we store a reference to what we call the head 
+
+class LinkedList {
+    constructor(){
+        this.head=null;
+    }
+}
+
+const history = new LinkedList();
+history.head = firstPage;
+
+so we can add in the empty linked list and at first starts empty but as we fill it up with nodes, each node points to something or to null at the very end 
+
+things you might want to do:
+-print each ndoe 
+find a node by its data 
+append to end 
+insert at specific position 
+remove a node 
+
+next we will talk about traversal 
+
+__________________________________________________________________
+Traversing Linked Lists 
+__________________________________________________________________
+All a linked List is , is a reference or a pointer to the first point (head node) the very first element in our list 
+
+we can add a method to traverse or print 
+
+we could update our linkedlist class and hardcode it 
+
+class LinkedList {
+    constructor(){
+        this.head=null;
+    }
+    traverse() {
+        console.log(this.head.val);
+        console.log(this.head.next.val);
+        console.log(this.head.next.next.val);
+    }
+}
+
+const history = new LinkedList();
+history.head = firstPage;
+
+
+but what if we dont know the size, so we are going to want to loop through 
+
+we are going to want to continue printing as long as there is a .next 
+
+we can use a while loop to do this 
+
+so currently our whole linked list stuff looks liek this 
+
+class Node {
+    constructor(val, next=null){
+        this.val = val;
+        this.next = next;
+    }
+}
+
+const firstPage = 
+    new Node('www.google.com',
+        new Node ('www.reddit.com', 
+            new Node('www.amazon.com',
+                new Node('www.youtube.com'))));
+
+class LinkedList {
+    constructor(){
+        this.head=null;
+    }
+    traverse() {
+        let currentNode = this.head;
+        while(currentNode){
+            console.log(currentNode.val);
+            currentNode = currentNode.next;
+        }
+    }
+}
+
+const history = new LinkedList();
+history.head = firstPage;
+
+history.traverse();
+
+what if we want to see if we find to see if 77 is in the list ?
+
+we can go through each node in the list to see if it is in one of the nodes 
+
+    find(val){
+        let currentNode = this.head;
+        while(currentNode){
+            if(currentNode.val === val) return true;
+            currentNode = currentNode.next;
+    }
+        return false;
+}
+
+so that is traversing and searching 
+
+next lets talk about inserting and removing elements from our linekd lists 
+
+__________________________________________________________________
+Appending Nodes 
+__________________________________________________________________
+Lets add a method to append to a ndoe 
+
+How do we append a node to the end of a linked list ?
+
+we currently dont have a way to find the node unless we go all the way to the end of the linked list 
+
+append(val){
+        let currentNode = this.head;
+        while(currentNode.next){
+
+        }
+    }
+this is a little different because we dont want to actually get to null we want to see before it happens so we can stop ahead of it so we can append 
+
+we want to get to the very last node where the .next is null 
+
+    append(val){
+        let currentNode = this.head;
+        while(currentNode.next){
+            currentNode = currentNode.next;
+        }
+        console.log("AT THE LAST NODE", currentNode.val)
+    }
+
+so we traverse down the list and now we know when we are at the nend 
+
+then we can set it equal to a new node and we can set that value equal to a new Node with the value of whatever we passed in 
+
+
+    append(val){
+        let currentNode = this.head;
+        while(currentNode.next){
+            currentNode = currentNode.next;
+        }
+        currentNode.next = new Node(val);
+    }
+so it looks like that and we can see we get the correct value back 
+
+history.append('www.twitter.com')
+undefined
+history.head.next.next.next.next
+Node {val: "www.twitter.com", next: null}
+
+we get undefined because we arent returning evyerhting but if we traverse through the linked list then we see its in there now with the twitter value added 
+
+so we can improve this by keeping track of the head and the tail 
+
+so inserting at the end will then also be constant time O(1) 
+
+so then what we are doing in effect is updating the tail value everytime we add something to the list 
+
+we take the current tail 
+make a new node with our new value 
+then we update tail to be the new node 
+
+    append(val){
+        const newNode = new Node(val);
+        this.tail.next = newNode;
+        this.tail = newNode;
+    }
+
+however with the way we currently have our list set up we are not currently using our append method so we should update our new linkedlist and add to the nodes by appending 
+
+
+lets make a train 
+const train = new LinkedList();
+train.append('Engine')
+
+but the problem here is that the very firsdt time we are appending is that there is no head and there is no tail 
+
+when we add our first item the head and tail will be the first node 
+
+so we can check if there is a head in our append method 
+
+    append(val){
+        const newNode = new Node(val);
+        if(!this.head){
+            this.head = newNode;
+            this.tail = newNode;
+        }
+
+        this.tail.next = newNode;
+        this.tail = newNode;
+    }
+
+so now we should be able to append our train engine 
+
+now because we have our head and tail being tracked, we can insert with near constant time O(1) 
+
+Removing a node by value 
+
+the code is kind of complex 
+
+we need to handle 
+
+-removing only item in linked list 
+    -dont forget to update head and tail to null
+-removing first item 
+    - dont forget to update the head 
+-removing the last item 
+    -dont forget to udpate the tail 
+-removing an item in the middle is a little trickier 
+
+first we need to find that node right before the thing we are trying to remove 
+then we need to remove it by finding the thing after it 
+then pointing from the element before to the element after 
+
+we will be creating linkedlist methods to do all this stuff 
+this is just a brief introduction 
+
+__________________________________________________________________
+Linked Lists big O 
+__________________________________________________________________
+
+Going to the next item is very easy 
+-single operation O(1)
+Going to item by arbitrary index 
+-(we dont have a big picture overview)
+-O(n) bigger list, it will take longer 
+Searching for a value 
+-O(n)
+General insertion or deletion 
+-in general it is O(n) because we have to run through and then insert 
+Adding to start and Appending to end 
+O(1) unless we dont know the end then it is O(n) for the tail 
+Deleting at the start 
+-O(1)
+Removing from the end of a singly linked lists is constant time 
+-(our actual class is blind to the element before the tail so we would have to traverse through it)
+-O(n)
+
+next up is doubly linked lists 
+
+__________________________________________________________________
+Doubly Linked Lists 
+__________________________________________________________________
+these have an attachment for a .next and a .previous 
+
+each node has an additional pointer to go to the previous node 
+
+we can traverse backward if needed 
+makes insertion a little easier 
+makes removing from the end of a list easier 
+
+with a doubly linked list we can go right to the tail and remove the previous 
+
+the one downside from an implementation perspective is that we cant forget to update the two pointers 
+we are storing more stuff in memory like this 
+
+main difference is we have a double connection 
+
+
