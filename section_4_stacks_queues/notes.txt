@@ -1,0 +1,360 @@
+Intro to stacks and queues
+_________________________________________________
+
+Two new data structures that are not native in javascript 
+
+Goals
+-What is a queue data structures
+-What is a stack?
+Compare and contrast stacks and queues 
+implement stacks and queues in javascript
+
+we are going to be writing our own 
+
+need to hold multiple items 
+can insert or delete items at any position 
+can contain duplicates 
+preserves order of items 
+
+imagine we are writing an application for a taylor swift concert 
+
+in principal we want to protect an order 
+
+what about a printer 
+if we have a print job we should print something in order 
+
+so we try shift to print things from the beginning as we go 
+
+and that should work 
+but whats the performance issue?
+
+the problem is that it is O(n) to remove from the start of array 
+given that we are removing from end a LL would be better 
+
+and this is because we are moving everything over 
+it is hard to know 
+
+we could use arrays to store information that is listlike 
+
+in btoh cases we only need some of the capability of the List ADT 
+add new item to end 
+remove first item from start 
+
+we dont need to do anything fancy 
+we just want to be able to add or remove from the back and front 
+
+we can create a data structure that is more limited but it can be incredibly efficient at larger scale 
+
+one is a stack and one is a queue 
+they are not considered lists becayse we cannot move around internal information we only deal with the ends 
+
+_________________________________________________
+Arrays as queues 
+_________________________________________________
+
+the queue is the first data type we will look at 
+
+add at end 
+remove from beginning 
+
+we add at the end and we remove from the start 
+
+Like a list except 
+
+items are only added to a queue by enqueueing them a thte back 
+items are only removed from a queue by dequeueing them at the front 
+newer items are near back of queue older items are near front 
+
+FIFO for first in first out data structure 
+
+typical methods 
+
+enqueue(item)
+add to end 
+
+dequeue()
+remove and return first tiem
+
+peek()
+
+return first item but dont remove 
+
+isEmpty()
+are there items in the queue 
+
+there are lots of ways we could implement this 
+
+const queue = [];
+
+queue.push('Elie')
+queue.push('Blue')
+
+queue.shift()
+
+there is a problem with this though 
+even if we made a class 
+
+class Queue {
+    constructor() {
+        this.data = [];
+
+    }
+    enqueue(val){
+        this.data.push(val);
+    }
+    dequeue(val){
+        return this.data.shift();
+    }
+}
+
+const waitLine = new Queue();
+
+waitLine.enqueue('Charlie')
+waitLine.enqueue('David')
+waitLine.enqueue('Yang')
+
+
+the problem is that this is inefficient 
+
+this is still an O(n) operation 
+
+adding on to the end of the array is not the real problem
+this does function as a queue, it meets the requirements but this is not the optimal solution 
+
+_________________________________________________
+queues as linked lists  
+_________________________________________________
+whats a good implementation for queues 
+arrays - no dequeueing would be O(n) 
+linked lists - yes, both enqueue and dequeue are O(1) (head is top)
+doubly linked list - yes, both enqueue and dequeue are O(1)
+objects? - no , dequeueing is O(n) but you would have to search through the object 
+
+we can easily implement a queue on a linked list 
+
+the whole point of these structures is that they are faster at a limited set of operations 
+
+in the case of a queue inserting at the end and dequeueing from the beginning 
+
+linked lists make a good implementation 
+
+_________________________________________________
+Stacks Intro 
+_________________________________________________
+
+Stacks are a limited data structure 
+
+stacks are all about two main operations 
+adding and removing 
+
+think of a stack as a stack of pancakes 
+
+the one on top is the one you are trying to eat 
+
+the idea of a stack is that whatever is added in last is what is going to go out first 
+
+a really common use case for stacks is function calls 
+
+
+i want to order pizza for our party 
+-in order to do that i9 call the pizza place 
+    -they ask me how many i want 
+        -i put them on hold to ask my boss the budget 
+            -she gives the amount in CAD conversion but pizza uses usd
+            -i look up usd CAD conbversion rates 
+        now i can convert budget to cad 
+    now i can tell pizza place my budget 
+
+so we have a set of unresolved instructions that need to be resolved 
+
+so his example of making the pizza is an example of a stack 
+things are added to the top and removed from the top 
+
+newer items are newar top of stck 
+
+LIFO 
+last in first out 
+
+the most recently added thing is the first to come out 
+instead the first thing  that was added is the first thing to come out 
+
+_________________________________________________
+Stack implementations 
+_________________________________________________
+
+A stack is another very simple data structure 
+
+typical methods 
+-push(item)
+add to the top of stack 
+pop()
+-remove and return top item 
+peek()
+-return but dont remvoe the top item
+isEmpty()
+-are there items in the stack 
+
+just like with the queue we could use an array 
+
+const stack = [];
+
+//if the top is the beginning 
+
+stack.unshift('Socks');
+
+stack => socks 
+
+so we can add in items so if we want to remove we want to remove from the beginning 
+so 
+stack.shift()
+
+this approach is not great 
+this is a valid implementation of a stack 
+
+but inserting into an array and removing causes us to have to move all the items 
+
+what if we add it to the end?
+stack.push()
+and stack.pop()
+to remove 
+this is far more efficient because this is constant time 
+
+this is not a bad implementation to get the effect of a stack 
+push and pop as a pair are good to get us a stack 
+
+Arrays - yes with push and pop 
+LL - yes removing from the end is not constant time so this is O(n) , but if we do it to the beginning it is constant time 
+DBL LL - yes, both push and pop are O(1)
+Object - no, popping is O(n) have to scan whole object to find high key 
+
+thats kind of it for stacks 
+they are pretty straightforward
+
+_________________________________________________
+Deques "decks" double ended queue 
+_________________________________________________
+
+There is another data structure in this family 
+
+an adt for a double ended queue - push pop shift and unshift 
+
+can add and remove from both sides 
+less common overall 
+
+for a ticket buying application 
+get ina queue to buy a ticket : added to end 
+buy ticket : removed from the front 
+have a question concern about purchse:
+-would be unfair to have to go to end of line for question 
+-should be next helped: pushed to front 
+
+we should have a way to bring these people to the front 
+we can add to the beginning and remove from the end 
+
+these are uses in certain situations 
+
+the naming for methods are not common 
+deques(PRONOUNCED DECKS BTW)
+
+A-steal job scheduling algos 
+
+deques are uses in the real world
+
+Implementations 
+appendleft()
+appendright()
+popleft()
+popright()
+peekleft()
+peekright()
+isEmpty()
+
+Arrays - no, appendleft and popleft would be O(n)
+LL - no, popright would be O(n)
+DBL LL - yes, everything is O(1) inserting from the beginning and end are all constant time we just ask for previous or next 
+Objects - no popleft and popright would be O(n) 
+
+so thats a rough over view of decks 
+
+_________________________________________________
+Priority Queue
+_________________________________________________
+
+we will revisit this 
+
+holds multiple values 
+we can insert into it 
+
+Add item(with priority)
+Remove highest-priority item 
+
+imagine we are running a hospital,not everyone is as severe or as acute of an injury 
+unfortunately for the people with lesser medical needs they should probably wait while we tackle everyone as we go 
+
+here is this person and this injury and here is how we go 
+
+typical methods 
+
+add(priority, item)
+-add iotem to queue
+poll()
+-remove and return top-priority item 
+peek()
+-return (dont remove) top priority item 
+isEmpty()
+-are there item in queue?
+
+implementing 
+keep unsorted , add to end, find top priorty on poll is one approach 
+keep sorted , add at right place, top priority is first, when its time to remove we know its the right item 
+
+arrays? no- peek and poll would be O(n) 
+ll? no - peek and poll would be 
+dbl ll? - no peek and poll would be O(n) 
+
+we could start with an array 
+
+class PriorityQueue{
+    constructor() {
+        this.data = [];
+    }
+    add(priority,value){
+        this.data.push({priority,value})
+    }
+    poll(){
+        let maxIdx = 0;
+        let maxPriority = this.data[0].priority;
+        for(let i = 1; i < this.data.length; i++){
+            if(this.data[i].priority > maxPriority){
+                maxPriority = this.data[i].priority;
+                maxIdx = i;
+            }
+        }
+        return this.data.splice(maxIdx,1)[0].value
+    }
+}
+
+const pq = new PriorityQueue();
+pq.add(8,'broken leg')
+pq.add(6,'dizziness')
+pq.add(10,'heart attack')
+pq.add(2,'tooth ache')
+
+
+this is one implementation of a priority queue with an array 
+
+this is not the best way to do it because this is an O(n) operation 
+
+keep sorted add at right place top priority is first 
+
+with what we know right now this is not the best way to do this 
+
+There is another 
+
+Heaps 
+
+Data structure optimized for priority queues: heap 
+
+it will be ordered in some way but we know that the highest value is always at the top 
+for now this implemenation will work for now 
+
