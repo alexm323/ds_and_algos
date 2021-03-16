@@ -1,0 +1,67 @@
+recursion 
+_______________________________________________
+take a break to talk about a polarizing but interesting topic 
+
+it is when a function calls itself 
+
+can be a very powerful programming technique 
+you may run into questions that involve recursion
+
+The Jokes?
+Colt hates them xD 
+
+_______________________________________________
+The Call Stack 
+_______________________________________________
+
+What happens when one function calls another function 
+
+the stack adds that function to the top and then it completes that before moving on 
+thanks to the javascript callstack 
+
+the understandiong of the callstack is really central to how recursion works 
+
+recursion is simply the act of calling a function inside of itself 
+dont do that though becaue there will be an infinite-like loop 
+
+we have to add in a stopping point to make sure that we are not recursing forever 
+
+Loops and recursion 
+
+_______________________________________________
+Counting Recursively 
+_______________________________________________
+
+ANy loop can be written with recursion 
+Any recursion can be written instead with a loop 
+
+overall we can always write one as the other 
+
+Count to 3 
+
+using a while loop:
+
+function count() {
+    let n = 1;
+
+    while (n <= 3){
+        console.log(n);
+        n +=1;
+
+    }
+}
+
+using recursion 
+
+function count(n=1){
+    if(n > 3) return;
+    console.log(n);
+    count(n+1);
+}
+
+the return is hugely significant because 
+we arent really returning anything we are stopping the cycle of the count where we can pop something off the call stack 
+
+sometimes recursion is the intuitive choice but this was not a great example of that 
+
+
