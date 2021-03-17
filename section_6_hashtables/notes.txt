@@ -1,0 +1,121 @@
+Goals
+Define what a hash table is
+Describe how hash tables are implemented
+Describe what a hash function is, and what properties it should have
+Handle hashing collisions
+Identify time complexities of common hash table operations
+
+__________________________________________________________________________________________________
+Hash Table Introduction 
+__________________________________________________________________________________________________
+
+Maps/HashTables 
+
+Abstract Data Type for mapping key to value 
+
+in javascript we have a map class , or objects 
+python has dictionaries 
+
+key value pair structures 
+
+a typical api for this 
+
+set(key,val)
+get(key)
+delete 
+Has
+keys 
+values 
+entries(iterable of key,value pairs)
+
+how would we create something like this ?
+
+one option is to use an array 
+
+
+class SimpleMap {
+  constructor() { this._items = []; }
+
+  set(k, v) { this._items.push([k, v]); }
+
+  get(k) {
+    let kv = this._items.find(kv => k === kv[0]);
+    return kv ? kv[1] : undefined;
+  }
+
+  has(k) {
+    return this._items.find(kv => k === kv[0]) !== undefined;
+  }
+
+  delete(k) {
+    let i = this._items.findIndex(kv => k === kv[0]);
+    if (i !== -1)  this._items.splice(i, 1);
+  }
+
+  keys()    { return this._items.map(kv => kv[0]); }
+  values()  { return this._items.map(kv => kv[1]); }
+  entries() { return this._items; }
+}
+
+[['color','orange'], ['age',29]]
+
+'age'
+
+if we find something where the age is the key then we return 29 
+
+we can use this to get and set 
+
+and it basically is sort of like an object 
+
+all of these methods from this simple map class require us to iterate through the whole array to find the items in an array 
+
+so this is not great in terms of big 0 notation 
+
+relatively simple 
+
+this is a valid map 
+
+we could use arrays or functions 
+
+there is a more efficient way 
+
+__________________________________________________________________________________________________
+hash map with array 
+__________________________________________________________________________________________________
+
+so that was one way 
+
+there is another approach we can take 
+
+Hash tables 
+
+we are going to use an array behind the scenes , but instead of adding in arbitrarily 
+we are going to use some kind of magic array 
+
+we can take the key and turn it into the array index
+our magic array will turn cherry into an array index 
+
+this is a real thing called a hash table  
+it uses a hash function to compute an index , into an array of buckets or slots 
+
+this is a different kind of hash function 
+
+how does this all work 
+
+if we are only worried about keys asstrings 
+
+we can get the charCode 
+
+str: a p   p   l   e 
+cC: 97 112 112 108 101 = 530 
+
+
+function hash(key){
+    return Array.from(key).reduce(
+        (accum, char) => accum + char.charCodeAt(),
+        0
+    );
+}
+
+this gives us a number and we can use this number to store it in some array 
+
