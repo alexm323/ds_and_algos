@@ -1,0 +1,386 @@
+Intro to Trees 
+________________________________________
+New data structure called trees, we have worked with them before 
+
+Goals
+-Introduce terminology
+-create a tree class and methods 
+-learn uses for trees 
+
+The core idea of a tree data structure is that there is some top node and from that node there can be child nodes 
+
+There are tree structures all over the place 
+
+Org charts 
+
+there has to be just 1 node at the top and that can have children nodes 
+
+a filesystem is a tree 
+
+there is a top most root called the root directory and then from there we have children where we can have our own children withim those children 
+
+these are tree structures 
+
+the HTML DOM is a tree html head body etc
+
+if i wanted to find some element with an id of content and i didnt know where it was 
+i could start at the top of the dom and access the document.documentElement 
+
+and it has a property called children that will contain references to its child object 
+
+so if we were trying to find that id 
+then we could do a document.documentElement.children[1].children and then we can find a div that has the id of content 
+
+and we can keep going through into we reach the end of a line 
+
+this is a tree structure , where there is one top element 
+
+in biology there is a taxonomy tree 
+
+trees need a root node 
+
+one element that starts the tree
+
+a node can only have one parent 
+
+________________________________________
+Tree terminology
+________________________________________
+
+node - basic unit (every element within a tree)
+
+children - any nodes that are directly below some other node 
+
+descendants - any node that falls below a node but may not be a direct child 
+
+parent - node that is directly above another node 
+
+ancestor - node that is above a node but not a direct parent 
+
+
+root node - node at the top of the tree
+
+leaf node - node without any children 
+
+
+binary trees and binary search trees we will talk about later 
+
+in a binary tree elements may only have two children max 
+
+just a tree with an additional constraint 
+
+there are quad trees where each node has exactly four children 
+
+general trees are called n-ary trees thats just a way of saying that there is no additional constraint 
+
+________________________________________
+implementing a tree 
+________________________________________
+
+Trees in Javascript 
+
+they are all about storing children 
+if we went with a linked List approach where we have our node class 
+
+rmember a linkedList looks like this 
+
+class Node {
+    constructor(val){
+        this.val = val;
+        this.next=null;
+        this.prev = null;
+    }
+}
+
+this wouldnt work exactly unless we had a binary tree 
+
+if it was an n-ary tree 
+
+we cant hardcode a bunch of slots 
+
+we could make it work but we would have a cap 
+
+instead we could use an array 
+
+class Node {
+    constructor(val){
+        this.val = val;
+        this.children = [];
+    }
+}
+
+let amy = new Node('amy');
+
+let bob = new Node('bob');
+let barb = new Node('barb');
+let barry = new Node('barry');
+
+amy.children.push(bob)
+amy.children.push(barb)
+amy.children.push(barry)
+
+> amy
+Node {
+  val: 'amy',
+  children: [
+    Node { val: 'bob', children: [] },
+    Node { val: 'barb', children: [] },
+    Node { val: 'barry', children: [] }
+  ]
+}
+
+
+and we can add additional levels 
+
+class Node {
+    constructor(val, children=[]){
+        this.val = val;
+        this.children = children;
+    }
+}
+
+let amy = new Node('amy', [new Node('bob'),new Node('barb'),new Node('barry')]);
+
+we can also use this kind of structure so that we can accept an array of nodes as our children in the array 
+
+let htmlElement = new Node('html', [new Node('head', [new Node('title'), new Node('body',[new Node('ul', [new Node('li'), new Node('li')])])])])
+
+its a lot of nesting and stuff but this works if we wanted to do it this way 
+
+we could make a tree class like a linked List so we can point to the head of a tree 
+
+next we are going to be talking about traversing a tree 
+
+________________________________________
+Depth First search
+________________________________________
+
+Lets talk about tree traversal 
+
+Starting at a node and find a certain node, or touching every node in the tree 
+
+but through code if we only have access to the node how do we traverse through these Trees
+
+
+breadth first traversal
+depth first traversal 
+
+we need to have a way to store the nodes that we have not yet visited 
+
+do we start with trying to find the depth first and go deep to the descendants, or do we check all the direct children first 
+
+go wide or go deep 
+
+lets add a find method to our node class that accepts a value 
+
+this is the idea of what we want to get back  
+we want to return the ndoe where we find the li or whatever value we throw in there 
+
+
+> htmlElement.find('li')
+Node { val: 'li', children: [] }
+> 
+
+this is how we can implement a find feature for our node class 
+
+class Node {
+    constructor(val, children=[]){
+        this.val = val;
+        this.children = children;
+    }
+    find(val){
+        // we are going to use a stack data structure 
+        // we can create one using an array where we just add and remove from the end 
+        // this is referring to whatever we called find on , in this case HTML element node 
+        const toVisitStack = [this];
+        // is there a length to the stack? yes? then we pop it off
+        while(toVisitStack.length){
+            const current = toVisitStack.pop();
+            // is the value equivalent to what we are looking for 
+            if(current.val === val){
+                return current;
+            }
+            // for each child of current , we are going to push them in the to visit stack , push in the head node and body node and then we check those and pop those values 
+            for(let child of current.children){
+                toVisitStack.push(child)
+            }
+        }
+    }
+
+}
+
+if we add in a console.log to help us see where we are visiting 
+
+> htmlElement.find('li')
+Visiting: html
+Visiting: head
+Visiting: body
+Visiting: ul
+Visiting: li
+Node { val: 'li', children: [] }
+
+we get this output 
+
+this kind of search is a depth first search 
+we are using a stack and pursuing downwards first to see if we can find the element 
+
+because we used a stack , the most recently visited child, we end up descending further down 
+
+there are different orders from a depth first search 
+
+we are moving down the depth of the tree where a different approach is to go wide 
+
+________________________________________
+Breadth first Search 
+________________________________________
+
+this is an alternative way to search 
+
+a different approach is to do a breadth first traversal 
+this can be useful in lots of situations 
+
+if we wanted to find the highest ranking consuela in the org chart if we had multiple 
+
+the secret to implementing this is to use a queue instead of a stack 
+
+all we would need is to make sure that the first thing that has been added on to the queue we shift it 
+
+> htmlElement.findBreadthFirst('li')
+Visiting: html
+Visiting: head
+Visiting: title
+Visiting: body
+Visiting: ul
+Visiting: li
+Node { val: 'li', children: [] }
+> htmlElement.findDepthFirst('li')
+Visiting: html
+Visiting: head
+Visiting: body
+Visiting: ul
+Visiting: li
+Node { val: 'li', children: [] }
+
+
+    findBreadthFirst(val){
+        // we are going to use a stack data structure 
+        // we can create one using an array where we just add and remove from the end 
+        // this is referring to whatever we called find on , in this case HTML element node 
+        const toVisitQueue = [this];
+        // we will not pop from the end here we will shift from the beginning, the thing that has been in there the longest 
+
+        
+        while(toVisitQueue.length){
+            const current = toVisitQueue.shift();
+            console.log(`Visiting: ${current.val}`)
+            // is the value equivalent to what we are looking for 
+            if(current.val === val){
+                return current;
+            }
+            // for each child of current , we are going to push them in the to visit Queue , push in the head node and body node and then we check those and pop those values 
+            for(let child of current.children){
+                toVisitQueue.push(child)
+            }
+        }
+    }
+
+
+the only real difference is how we are removing the elements 
+
+there is a really good explanation of how this works in this video
+
+so the slight tweak of where we are removing from our array (which we are implementing as a queuein breadth first) determines the way we go through the tree 
+
+within depth first traversal there are different orders 
+
+there are many ways of going, but there are different orders 
+
+________________________________________
+Actual tree class 
+________________________________________
+
+we have been writing all of our code inside of our node class 
+
+do we need a tree class? 
+
+we could use it to keep track of the root 
+
+each node though could be categorized as its own tree 
+
+it is nice to implement find on the node because we could have a descendant hundreds of children down and we would be able to implement the find methods on the nodes since each node functions as a its own tree in a way 
+
+> const tree = new Tree(htmlElement)
+undefined
+> tree
+Tree { root: Node { val: 'html', children: [ [Node] ] } }
+> tree.findInTreeDFS('ul')
+Visiting: html
+Visiting: head
+Visiting: body
+Visiting: ul
+Node {
+  val: 'ul',
+  children: [
+    Node { val: 'li', children: [] },
+    Node { val: 'li', children: [] }
+  ]
+}
+> tree.findInTreeBFS('ul')
+Visiting: html
+Visiting: head
+Visiting: title
+Visiting: body
+Visiting: ul
+Node {
+  val: 'ul',
+  children: [
+    Node { val: 'li', children: [] },
+    Node { val: 'li', children: [] }
+  ]
+}
+
+because of the way we have constructed our methods 
+
+________________________________________
+Trees Wrap Up 
+________________________________________
+
+basic intro to trees and other types of trees 
+
+binary trees are again trees that can have only a max of 2 children 
+
+some node may have 0-2 children 
+
+binary trees are usually structured with left and right properties 
+
+why would you use one 
+they are used to store data in a normal hierarchy like a tree 
+
+often times they have a rule about the arrangement 
+
+binary search trees 
+min max heap 
+
+these rules make them very efficient in certain tasks 
+
+other trees 
+
+one example is quad trees 
+often used for geographic programs ot keep track of NESW directions 
+
+moving up a tree 
+it is not possible to move up 
+
+some trees point up 
+
+some point both ways
+these are called bi directional trees/nodes 
+
+you would have a parent and children element for these nodes 
+
+a lot of this data structure stuff can be really dry 
+
+it can be conceptually heavy, take the time 
+
+trees will pop up again , we are done with the basics of tree structures, but soon we will level up our trees 
+
