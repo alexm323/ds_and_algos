@@ -119,3 +119,326 @@ function hash(key){
 
 this gives us a number and we can use this number to store it in some array 
 
+class HashMap {
+    constructor(){
+        this._items = [];
+    }
+    // this set method uses our hash function to hash the key and set the value in our empty array for an instance of this hash map 
+    set(k,v){
+        const hashedKey = hash(k);
+        this._items[hashedKey] = v;
+    }
+    // allows us to get the valye back also using the hashed key so we can access the value with the index when we ask for a key all we have to do is hash that key and access the array at that index
+    get(k){
+      const hashedKey = hash(k);
+      return this._items[hashedKey];
+    }
+}
+
+> const m = new HashMap()
+undefined
+> m.set('apple','red')
+undefined
+> m
+HashMap { _items: [ <530 empty items>, 'red' ] }
+> m.set('grape','purple')
+undefined
+> m
+HashMap {
+  _items: [ <527 empty items>, 'purple', <2 empty items>, 'red' ]
+}
+> m.get('apple')
+'red'
+> 
+
+so these operations are very quick because we dont have to search through every single element 
+
+these are just single operations , we have an exact index so we dont have to search through every single element 
+
+the hashing function is not a single function since it does cycle through a number 
+
+if we have long strings it takes longer, we can end up with big arrays with this method that end up very sparse 
+
+overall though we have some hash function 
+
+then the rest is easy 
+
+we take a key and value we hash it and we set it at the index 
+
+if the hashing is fast then the whole thing is fast 
+
+
+__________________________________________________________________________________________________
+Improving hash functions
+__________________________________________________________________________________________________
+We have a basic hash map working 
+
+but we might get huge indices depending on the string 
+
+is there a way to create hash map functions that make it smaller?
+
+what if we only needed to store ten words but they had varying lengths, it wouldnt make sense to have huge arrays with 3k slots when we only need 10 
+
+one solution to limit the size of the index is to use module 
+
+to truncate the hash 
+
+with our new hash we get these outputs 
+
+\> hash('apple',10)
+0
+> hash('grape',10)
+7
+> hash('lkjashflkjahsdfjklhasdfjhklasdf',10)
+6
+> 
+
+function hash(key, arrayLen) {
+  // fancy syntax but all we are doing is turning the key into a number that indicates the index that the value will be stored at 
+  hashed =  Array.from(key).reduce(
+    (accum, char) => accum + char.charCodeAt(),
+    0
+  );
+  return hashed % arrayLen;
+}
+
+just uses the module to limit the size of the array index 
+
+> const map = new HashMap()
+undefined
+> map.set('apple','red')
+undefined
+> map.set('grape','purple')
+undefined
+> map
+HashMap { _items: [ 'red', <6 empty items>, 'purple' ] }
+> 
+
+
+but there is issues here 
+
+we might have collisions if we severely limit the indices 
+
+We can solve this with something called Horners Method 
+
+cat and act would give us the same hash for example 
+
+we use a prime number or something and it gives us different hashes 
+
+function hash(key,array_len){
+  const H_prime = 37;
+
+  let numKey = Array.from(key).reduce(
+    (accum, char) => accum * H_prime + char.charCodeAt(),
+    0
+  );
+  return numKey % array_len;
+};
+
+so this is an improvement over what we had before because now we wont have collisions on words that are palindromes 
+
+__________________________________________________________________________________________________
+Hash Function Runtime 
+__________________________________________________________________________________________________
+
+So we have a little taste of defining a hash table or hash map 
+
+we usually wouldnt write these hash tables or hashing functions 
+
+runtime of hash 
+
+amount of work to hash a key has nothing to do with how many items are in the map 
+
+in our implementation it is related to the length of the input string 
+
+it is more work in our implementation as the size of the characters 
+
+so we can call our big O , O(k) because it is k = chars in string 
+
+real world versions usually use first part of a string 
+these could be O(1) as the length of the key doesnt affect the worst case 
+
+We can assume hash is O(1) in discussion of runtime for hash tables 
+
+Fast Hashes vs Crypto Hashes 
+
+Hash functions for hash tables prioritze 
+speed (must be fast)
+wide distribution (spread out values so there are fewer collisions)
+
+crypto hashes are slow on purpose difficult to reverse the output 
+for crypto uses always use a proven crypto hash not your own 
+
+real world hashes run in constant time 
+ours doesnt but real world is optimized and implemented 
+
+__________________________________________________________________________________________________
+Seperate Chaining 
+__________________________________________________________________________________________________
+
+What happens if berry hashes to 4 and durian hashes to 4 
+
+how are we going to store them at the same index 
+
+one process is called seperate chaining 
+
+one solution is to put an array in that index called a bin/bucket ,
+if its empty then we put in the key value , otherwise we search the array 
+
+it is almost constant time to search within a given bucket 
+
+if not in array return undefined 
+has() same idea returns value 
+
+with seperate chaining , the idea of storing buckets at each index 
+
+values() and entries() are the same idea 
+
+to delete something 
+hash a key 
+if bin is empty : return 
+search array for index of item 
+splice array to remove item 
+
+instead of using arrays a common pattern is to use a linked list at the bucket , especially if we are limiting each index to just 2 or 3 items at each index 
+
+so we hash the value we are searching 
+finds the index to look at 
+then searches through it 
+
+there is a seperate strategy 
+
+hash table runtimes 
+
+__________________________________________________________________________________________________
+Hash Table Big O 
+__________________________________________________________________________________________________
+
+run time of a good hashing function 
+
+HashTable Runtimes 
+
+set (O1)
+get,has mostly (o1)
+delete,has mostly (o1)
+keys,values,entries (On) 
+
+ideally hash tables can be O(1)
+if we dont have collision and array is right size 
+
+You can get close to O(1) by:
+choosing array size large enough to minimize collisions 
+
+
+even with near perfect hashing, collisions are unavoidable 
+even witha  million slots there is a 95% chance that there will be some collision 
+
+a good implementation of a hash table will have a max size for each bucket 
+
+if you have a predictable number of collision it can be O(1)
+
+if we had unlimited numbers in a bucket and our hash function was bad it could be bad 
+
+resizing 
+
+to ensure efficiency good implementation shrink/ grow array 
+often aiming to keep it at 75% occupied 
+
+this means some .set() and .delete() calls will take longer 
+if shrink grown by proportion will be amortized(O1)
+
+have to have a good hashing functions and a good hashing table that is able to resize when appropriate 
+
+__________________________________________________________________________________________________
+Linear Probing 
+__________________________________________________________________________________________________
+
+So we can chain things together at some bucket and then we can search through those elements if we need to 
+
+this is one strategy but there is a whole other strat 
+
+Open Addressing 
+
+we can make each bin just a single key value pair 
+
+if collision look at the next place 
+this can be the next bin 
+or there are smarter algos to reduce clumping 
+
+so it will move on to the next available slot if the bin was taken 
+
+we wouldnt want all the hashes to be concentrated inbetween the many indices 
+
+double hashing is another strat 
+if there is a collision then we will use another hash function to find a new spot 
+
+chaining - share one bucket
+open addressing 
+linear probing 
+double hashing 
+
+these are some strategies 
+
+__________________________________________________________________________________________________
+Hash table wrap up 
+__________________________________________________________________________________________________
+
+Sets 
+
+some of the structures we have used already that are implemented on top of hash tables 
+
+Sets in genreal are hash maps 
+
+a set is just a map without values 
+same runtime characteristics 
+
+a set is really used to just track a set of values and check if something is in there 
+
+Javascript Map 
+
+built in type for mappi9ng 
+keys can be any type 
+retrieval uses triple equals to match 
+keeps keys in order of insertion 
+constant time for getting setting and deleting 
+
+Objects 
+generic object can use for mapping 
+was the only way before Maps in Javascript
+
+Sets
+
+built in types 
+
+Python 
+
+Dictionaries 
+
+built in for mappping 
+
+Python Sets 
+have some very nice functionality 
+
+frozen set 
+
+same as set but immutable 
+same runtime same api 
+
+Learning more about hash tables 
+
+good hash tables blog on blog in medium 
+
+start with the hash table one and hashing out functions 
+
+perfect hash tables 
+
+if you know your kleys in adcance you can have a hash table without chains or open addressing 
+
+there are algos that can discorver a perfect hash function for your keys that propduce a unique hash for each key 
+
+useful for small  
+
+there are minimal perfect hashing functions where you can take 4 vlues for example , hash them through the function and store only those four 
+
+there are algos to help us discover the perfect implementation 
+
