@@ -21,6 +21,7 @@ class Node {
                 toVisitStack.push(child)
             }
         }
+        return 0;
     }
 
     findBFS(val){
