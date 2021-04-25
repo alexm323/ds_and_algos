@@ -1,0 +1,279 @@
+Binary Search Tree notes 
+__________________________________________________
+BST Intro
+__________________________________________________
+A fancier version of a tree 
+
+A binary search tree 
+
+Just a tree that has a constraint on the number of children that a tree can have which is max 2 
+
+if we had an array of random words 
+
+[apple,fence,ghost,jackal,just,money,mystix,nerd,pencil,zebra]
+
+what if we wanted to insert the word banana 
+
+and we wanted to put it in order 
+
+we could use binary search, pick the midpoiint, compare and move the left or the right side 
+and that is O(N)
+
+if we insert something it would have to shift everything over if we wanted to add something new 
+
+Binary Search Trees come in here 
+a binary tree where each node can have at most two children 
+
+anything to the right is greater than the current node and the left is less than 
+
+the advantage of this tree is that it is easy to find a value 
+when it comes to inserting something, it is way faster 
+
+to insert a value we just need to find an appropriate place for it 
+
+BST 
+- a tree made of nodes 
+- each node has a left and right child 
+-has a rule for arrangement 
+    -often used for fast searching 
+
+they are a very fast structure for finding and inserting data 
+
+__________________________________________________
+BST Class
+__________________________________________________
+Implementing BSTs 
+
+we will implement two classes two use these 
+
+we will cover some of the important basics 
+
+class Node {
+    constructor(val,left=null,right=null){
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+class BinarySearchTree{
+    constructor(root=null){
+        this.root = root;
+    }
+}
+const A = new Node('A');
+const B = new Node('B');
+const C = new Node('C');
+const D = new Node('D');
+const E = new Node('E');
+const F = new Node('F');
+const G = new Node('G');
+
+E.left = B;
+E.right = G;
+B.left = A;
+B.right = D;
+G.left= F;
+
+const tree = new BinarySearchTree(E);
+
+it is also helpful to have a tree class 
+we will make a BST Class and all it needs to have is a root 
+
+we have the tree setup now so we can now see how to search within our tree 
+
+__________________________________________________
+Searching a BST 
+__________________________________________________
+
+Search 
+
+lets add a method where we can pass some value and find if that value is within the search tree 
+we can search it normally , either breadth first or depth first 
+
+but the underlying principal is that we can search it faster wth the BST paradigm 
+
+we are going to have a loop or we can do this recursively 
+
+we can add it to the node 
+and define find 
+
+E.find('D')
+VM281:12 Visiting E
+VM281:12 Visiting B
+VM281:12 Visiting D
+Node {val: "D", left: null, right: null}
+'A' > 'B'
+false
+E.find('F')
+VM281:12 Visiting E
+VM281:12 Visiting G
+VM281:12 Visiting F
+Node {val: "F", left: null, right: null}
+
+so when we look at the nodes that we made we can see where it is visiting as it is searching through the tree 
+
+next we will talk about the performance and the run tiome for this 
+
+__________________________________________________
+BST Run time 
+__________________________________________________
+
+What is the Big O run time or not finding it 
+
+Every choice we make reduces options by half! 
+
+every single time we are cutting off half of that tree 
+
+at a small scale it doesnt seem so crazy 
+but at a huge scale it is a serious performance boost 
+
+at worst we have O(log n) 
+this is an O of log n time complexity as a worst case scenario 
+
+if we had 1000 nodes in only 10 steps 
+
+at a million it is only 20 steps 
+
+thats why it is incredibly fast 
+REFRESH on what the O log n means 
+
+next up blaancing trees 
+__________________________________________________
+Balancing trees
+__________________________________________________
+
+What does it mean in regards to BST 
+
+shows us a very unbalanced tree 
+
+it is not a very optimized structure 
+
+for a tree to be considered balanced, we want to minimize the height of the tree 
+it would be better to spread the tree out 
+
+if the tree is unbalanced youre missing out on the benefits of the BST 
+
+inserting is a similar process to searching 
+right or left right or left 
+
+there are a couple of strategies to get reasonably balanced trees 
+one of them is to shuffle them 
+
+because it will go back and forth unlike in the sorted list example 
+
+this is overall going to give us a better searching efficiency 
+
+another solution is to sort all of the values first and work from the middle working outwards 
+
+there are tree structures very similar that are self balancing 
+
+AVL trees 
+-keeps balanced, simpler algorithm
+pretty interesting although less efficient tree 
+
+
+Red/Black Trees
+is not quite as balanced
+more complex algorithm but can be more efficient 
+
+we care mostly about the average run time 
+
+by adding a tiny piece of boolean information or red and black on each tree 
+we can have the trees abide by a certain set of rules 
+if a node is red the two children must be black 
+
+it is an additional constraint that helps keep our tree reasonably balanced 
+
+just need to know that there are tree structures that are able to dynamically balance themselves 
+
+__________________________________________________
+Traversing a BST 
+__________________________________________________
+
+Traversal 
+
+traversal is often different from searching 
+traversal means that we want to look at every single node 
+
+we are just trying to visit everything 
+there is some recursion here and we will use our own methods 
+
+traverse(node=this.root){
+        // traverse the left side
+        if(node.left) this.traverse(node.left);
+        // when thats done I want you to print E or something 
+        console.log(node.val);
+        // then traverse the right side but we are doing this recursively 
+        if(node.right) this.traverse(node.right);
+
+
+
+    }
+
+this is our basic pattern 
+look at the left if it exists 
+look at myself
+look at the right 
+
+this is called in order traversal 
+
+so if we do the opposite , we call it pre order traversal 
+which goes in this order 
+
+myself
+traverse left 
+traverse right 
+
+this is pre-order 
+
+we also have post order 
+
+traverse left 
+traverse right 
+myself 
+
+this is called Post Order traversal 
+
+this is traversal , more about binary trees than BST 
+
+__________________________________________________
+hashmaps vs bst 
+__________________________________________________
+
+Hashmaps 
+
+O(1) lookip/addition/deletion
+extremely fast if implemented with a good hashing function 
+
+a hashmap you need to have a key, need to know exactly what you are looking for 
+everything has to be hashed 
+but there is no organization to the overall hashmap 
+
+cant find first word equal or after banana 
+cant find range of words between car and cat 
+
+BST 
+O(log n) lookup/addition/deletion 
+Can search for exact value, or inequalities
+can search for ranges 
+
+they serve different purposes 
+both of them store information 
+
+hashmaps are made to look things up and store things quickly 
+we can figure anything else out based off of related values 
+hash it and look in a bucket 
+
+BSTs let us find things within a rnage and its a bit slower 
+
+the absolute worst case in a BST is O(log n)
+
+a badly implemented hash map 
+with improper buckets or too many collisions 
+it can bring us up to log of N 
+it could be slower 
+but in general we rely on hashmaps that have already been built 
+
+two different structures 
+two different purposes 
+
