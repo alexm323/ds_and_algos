@@ -1,0 +1,431 @@
+Graphs 
+_________________________________________________
+Colts favorite abstract data type 
+
+Goals
+1. Learn what  graph is 
+2. Compare and contrast different types of graphs 
+3. Code a graph implementation 
+4. Check if two nodes are connected 
+
+Graphs are collections of nodes that are connected , sort of like a tree 
+our connections can contain cycles or loops , so it is not 1 way 
+
+the connections can be directed or not directed 
+
+Terminology:
+Vertex refers to each node 
+
+Edge or Arc refers to the connection between two vertices 
+
+Adjacent, means that they share an edge 
+
+Weight(optional) each edge can have a weight , price or distance, if we had some graph with cities we can describe how far apart they are with the graph 
+
+_________________________________________________
+
+Graph Examples 
+_________________________________________________
+
+Just a collection of nodes with connections
+vertices and edges 
+
+There is an example of a small portion of the food chain 
+
+Orcas at the top 
+
+This graph is directed showing what eats what 
+how would we code one of these ?
+
+there is a way with something called an adjacency list 
+
+Facebook friends (or LinkedIn)
+
+For some sort of social network 
+
+for facebook we establish a non directional or undirected graph edge 
+but on instagram you can follow someone without them following you back so that would be directed
+
+Processes
+Making cupcakes 
+It is a non traditional tree, there is a graph but it is one directional because the instructions order matters 
+
+Dont want to do a step until the necessary prereqs are done 
+similar idea for manufacturing processes 
+
+Airline Route Map 
+
+each edge has a weight 
+different cities are the vertices 
+the prices to the city with the edge shows a price 
+
+the connection itself is important but the other data is important as well the price and availabilty for example 
+
+storing information about geographical points is important and used all the time 
+
+Carpooling
+Each node is a rider and edges represent possible carpooling matches 
+only two people can carpool together at a time 
+how we can match the maximum number of pairs of riders 
+
+we could use a graph structure to store the possible matches 
+
+graphs are often used to model relationships between things 
+
+Trees contain zero cycles, they are acyclic 
+Trees are direct , acyclic graphs 
+
+Linked Lists have 0 or 1 child; acyclic and directed 
+Tree Node have 0+ chiuldren; acyclic and directed; only one designated root node 
+GRaphs Node have 0+ connections; cyclic or acyclic ; directed or undirected; disconnected or connected; optional weights 
+
+_________________________________________________
+Representing Graphs
+_________________________________________________
+When it comes to actually representing a graph there are two common approaches 
+
+Adjacency List 
+- for node, a list of every node it is directly connected to 
+might have an object with the node as a key and the value is an array with the adjacent node values 
+this is one strategy
+
+
+Adjacency Matrix
+- a matrix of every pair of nodes with a 1 if that pair is connected (otherwise 0) 
+we have a two dimensional structure that shows where the adjacent nodes are 
+
+We are going to go with using adjacency lists 
+if we had a really big data set it would be a lot easier to see it this way 
+
+in an adjacency list the arrays that show the connections only need to be as long as all of the connections 
+but we would have to update the other lists 
+
+if we had huge data sets then a matrix might be better but they need to keep track of the status between every possible connection 
+
+
+_________________________________________________
+Person Node
+_________________________________________________
+
+We are going to define a class to start to represent a single node and then create a graph class 
+
+we are going to make an undirected unweighted graph 
+
+instead of a generic node we can make a personNode 
+
+class PersonNode{
+    constructor(name){
+        this.name = name;
+        this.adjacent = [];
+    }
+
+}
+
+const homer = new PersonNode('homer simpson');
+const marge = new PersonNode('marge simpson');
+
+homer.adjacent.push(marge);
+marge.adjacent.push(homer);
+
+so we can use an array but the order doesnt matter for us 
+
+one of the drawbacks of an array though is that we might be able to add a duplicate edge 
+so instead of that we could use a set 
+we can make adjacent be initialized to a new empty set 
+
+and this would allow us to pass in adjacent if needed when we were passing in our person node 
+
+so we update with the set 
+
+class PersonNode{
+    constructor(name, adjacent = new Set()){
+        this.name = name;
+        this.adjacent = adjacent;
+    }
+
+}
+
+const homer = new PersonNode('homer simpson');
+const marge = new PersonNode('marge simpson');
+const maggie = new PersonNode('maggie simpson');
+const lisa = new PersonNode('lisa simpson');
+
+homer.adjacent.add(marge);
+homer.adjacent.add(maggie);
+marge.adjacent.add(homer);
+marge.adjacent.add(maggie);
+maggie.adjacent.add(marge);
+maggie.adjacent.add(homer);
+
+we need to make sure each vertices is going both ways 
+
+so this kind of sucks having to add in edges each time 
+we could add a method called connect 
+where we can pass in two nodes and add in a method that connects them in both directions instead of us having to manually do it 
+
+
+_________________________________________________
+Friend Graph Class
+_________________________________________________
+now we want to define a new class 
+all we have to do is have the collection of nodes 
+
+unlike a tree or linked list 
+
+we store one node for those and we can get the rest 
+
+if we only had a reference to one node in a graph, most of the time it is not connected to every node 
+
+the graph class is going to store the actual nodes 
+the nodes themselves will store the edges 
+
+lets make an add person method 
+take a node that is passed in and add it in to our set 
+
+so we get something that looks a bit like this 
+
+class FriendGraph{
+    constructor(){
+        this.nodes = new Set();
+    }
+    addPerson(node){
+        this.node.add(node);
+    }
+    addPeople(peopleList){
+        for(let node of peopleList){
+            this.addPerson(node);
+        }
+    }
+    setFriends(person1,person2){
+        person1.adjacent.add(person2);
+        person2.adjacent.add(person1);
+    }
+}
+
+
+we can add a person or an array of people if we have them and then with the setFriends method we can just add them as adjacent to those nodes without doing it manually for each one 
+
+class PersonNode{
+    constructor(name, adjacent = new Set()){
+        this.name = name;
+        this.adjacent = adjacent;
+    }
+
+}
+class FriendGraph{
+    constructor(){
+        this.nodes = new Set();
+    }
+    addPerson(node){
+        this.nodes.add(node);
+    }
+    addPeople(peopleList){
+        for(let node of peopleList){
+            console.log(node)
+            this.addPerson(node);
+        }
+    }
+    setFriends(person1,person2){
+        person1.adjacent.add(person2);
+        person2.adjacent.add(person1);
+    }
+}
+
+const homer = new PersonNode('homer simpson');
+const marge = new PersonNode('marge simpson');
+const maggie = new PersonNode('maggie simpson');
+const lisa = new PersonNode('lisa simpson');
+const grampa = new PersonNode('grampa simpson');
+
+const friends = new FriendGraph();
+friends.addPeople([homer,marge,maggie,lisa,grampa]);
+friends.setFriends(homer,marge);
+friends.setFriends(homer,lisa);
+friends.setFriends(homer,maggie);
+friends.setFriends(marge,maggie);
+friends.setFriends(maggie,lisa);
+friends.setFriends(lisa,grampa);
+
+so now we have six edges 
+
+
+_________________________________________________
+Graph Traversal
+_________________________________________________
+now we are going to learn about how to traverse this data structure 
+
+now we have our basic graph and node person set up 
+
+lets write a function to see if two people are connected
+NOT ADJACENT 
+is there a way to get from homer to grampa
+
+there is currently no islands so everything is connected 
+
+but imagine a different graph 
+
+graphs dont have to be all connected 
+this is still one graph 
+
+we want to know if there is a way to get to one city to another 
+is there a connection from denver to new york 
+in that graph there is a directed graph but is there a way in that way no 
+
+is there a way to get from new york to san francisco 
+and if there is multiple paths 
+inclduing the weight 
+
+we need to traverse through the graph 
+we want to make sure we only visit each vertex once 
+but how do we search through it ?
+-BFS - go to all closest neighbors and work our way outwards
+-DFS - continue on a path until its exhausted 
+
+since graphs can have cycles we want to make sure that we mark the node as visited 
+we have to know which nodes we have already been to 
+
+if we want to know if we can get from marge to moe 
+but we can end up in a cycle if we are not marking them as visited 
+
+_________________________________________________
+BFS Graph
+_________________________________________________
+we are going to update our graph to include moe barney and lenney the little island 
+
+const moe = new PersonNode('moe');
+const barney = new PersonNode('barney');
+const lenny = new PersonNode('lenny');
+
+friends.addPeople([moe,barney,lenny])
+friends.setFriends(moe,barney);
+friends.setFriends(barney,lenny);
+
+adding this in 
+
+we are going to add in a method that checks if they areConnected 
+
+we need to have some kind of structure to keep track 
+so a queue works here 
+
+areConnected(person1,person2){
+        let toVisitQueue = [person1];
+        while(toVisitQueue.length){
+            // if the person we are on
+            let currentPerson = toVisitQueue.shift();
+            // if that is equal to the person we are looking for, that means there is a connection so we return true 
+            if(currentPerson === person2) return true;
+
+            for(let neighbor of currentPerson.adjacent){
+                toVisitQueue.push(neighbor);
+            }
+        }
+    }
+
+so as is this will get us trapped in some cycle 
+so we need our code to know that we have visited some node so that we dont come back and try to visit it again. 
+this is because we are adding in adjacents back to the queue which might include someone we have already traversed 
+
+if we add in a set though we can add that as seen 
+
+when do we mark something as seen though?
+maybe after we have shifted them off 
+
+we will mark something as seen as soon as we have added them to the toVisitQueue
+we know about it , we have seen it 
+
+class PersonNode{
+    constructor(name, adjacent = new Set()){
+        this.name = name;
+        this.adjacent = adjacent;
+    }
+
+}
+class FriendGraph{
+    constructor(){
+        this.nodes = new Set();
+    }
+    addPerson(node){
+        this.nodes.add(node);
+    }
+    addPeople(peopleList){
+        for(let node of peopleList){
+            console.log(node)
+            this.addPerson(node);
+        }
+    }
+    setFriends(person1,person2){
+        person1.adjacent.add(person2);
+        person2.adjacent.add(person1);
+    }
+    areConnected(person1,person2){
+        let toVisitQueue = [person1];
+        let seen = new Set(toVisitQueue);
+        while(toVisitQueue.length){
+            // if the person we are on
+            let currentPerson = toVisitQueue.shift();
+            // if that is equal to the person we are looking for, that means there is a connection so we return true 
+            if(currentPerson === person2) return true;
+
+            for(let neighbor of currentPerson.adjacent){
+                if(!seen.has(neighbor)){
+                    toVisitQueue.push(neighbor);
+                    seen.add(neighbor);
+                }
+                
+            }
+        }
+        return false;
+    }
+}
+
+const homer = new PersonNode('homer simpson');
+const marge = new PersonNode('marge simpson');
+const maggie = new PersonNode('maggie simpson');
+const lisa = new PersonNode('lisa simpson');
+const grampa = new PersonNode('grampa simpson');
+
+const friends = new FriendGraph();
+friends.addPeople([homer,marge,maggie,lisa,grampa]);
+friends.setFriends(homer,marge);
+friends.setFriends(homer,lisa);
+friends.setFriends(homer,maggie);
+friends.setFriends(marge,maggie);
+friends.setFriends(maggie,lisa);
+friends.setFriends(lisa,grampa);
+
+const moe = new PersonNode('moe');
+const barney = new PersonNode('barney');
+const lenny = new PersonNode('lenny');
+
+friends.addPeople([moe,barney,lenny])
+friends.setFriends(moe,barney);
+friends.setFriends(barney,lenny);
+
+
+So this is a breadthfirst implementation 
+we can also do a depth first 
+
+really the difference is just in the structure we are using to keep track of the visited 
+
+since we use a queue here and isntead we can use a stack in depth first searching 
+
+_________________________________________________
+DFS Graph Iteratively 
+_________________________________________________
+Iterative approach to depth first search 
+
+the only difference is really that we are going to use a stack instead of a queue 
+instead of shifting we just pop off the end since that removes the most recent 
+last in first out 
+
+there is a really good explanation in this video of how the stack pops stuff off 
+
+_________________________________________________
+DFS Graph Recursively
+_________________________________________________
+Now we will see a recursive implementation of it because it is going to be a pretty clever solution 
+it is difficult to conceptualize the way it works 
+
+keeping track of the call stack 
+
+
