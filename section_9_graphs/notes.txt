@@ -428,4 +428,31 @@ it is difficult to conceptualize the way it works
 
 keeping track of the call stack 
 
+how are we ever going to know if we find the person 
+it is when person1 is equal to person 2 
+because each time person 1 is a new person 
 
+should step through this one and try to visualize the call stack 
+and draw out every step that is happening 
+
+_________________________________________________
+Graph Databases
+_________________________________________________
+Further Study 
+
+A very useful and sometimes challenging data structure
+it pops up all over the place in real world applications 
+
+graphs come up all over the place 
+
+we have talked about Traversal
+we did not talk about finding the shortest path 
+there is a base cs article that 
+
+Problem solving with algortithms and data str5uctures 
+
+Graph database : Neo4j 
+this is a very popular database for graphs 
+
+works very differently from something like postgres 
+we store data in a graph database as nodes ina graph 
