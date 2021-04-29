@@ -1,27 +1,63 @@
-function findFirstZero(arr) {
-    // find where  0 ends and 1 starts in sorted array 
-    let left = 0;
-    let right = arr.length - 1;
-    if (arr[0] === 0) {
-        return arr.length;
-    }
-    if (arr[right] === 1) {
-        return 0;
-    }
-    while (left <= right) {
-        
-        let mid = left + Math.floor((right - left) / 2);
-
-        if((mid === 0) || (arr[mid - 1] === 1 && arr[mid] === 0)){
-            return mid;
-        }else if(arr[mid] === 1){
-            left = mid + 1;
-        } else{
-            right = mid - 1;
+function bubbleSort(arr){
+    for(let i = 0; i < arr.length; i++){
+        for(let j = 0; j < arr.length; j++){
+            console.log(arr)
+            if(arr[j] > arr[j+1]){
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1]= temp;
+            }
         }
-
-
+        // take whatever element is at i and compare it to the element at i + 1
+        
+        
+        
     }
-    return -1;
-            
+    return arr;
 }
+
+function bubbleSort2(arr){
+    for(let i = 0; i < arr.length; i++){
+        // this is the magic line that subtracts from how many we search based on the amount of sorted values already in the correct positions 
+        // we end up with a decerementing number of inner lops 
+        for(let j = 0; j < arr.length-i; j++){
+            console.log(arr)
+            if(arr[j] > arr[j+1]){
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1]= temp;
+            }
+        }
+        // take whatever element is at i and compare it to the element at i + 1
+        
+        
+        
+    }
+    return arr;
+}
+function bubbleSort3(arr){
+    for(let i = 0; i < arr.length; i++){
+        // this is the magic line that subtracts from how many we search based on the amount of sorted values already in the correct positions 
+        // we end up with a decerementing number of inner lops 
+        let swapped = false;
+        for(let j = 0; j < arr.length-i; j++){
+            console.log(arr)
+            if(arr[j] > arr[j+1]){
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1]= temp;
+                swapped = true;
+            }
+        }
+        if(!swapped) break;
+        // take whatever element is at i and compare it to the element at i + 1
+        
+        
+        
+    }
+    return arr;
+}
+
+bubbleSort([45,6,7,23,1,19]);
+bubbleSort2([45,6,7,23,1,19]);
+bubbleSort3([45,6,7,23,1,19]);

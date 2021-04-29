@@ -1,0 +1,231 @@
+Intro Sorting
+____________________________________________
+
+Sorting algorithms is a kind of fun comp sci topic 
+
+there are lots of ways to sort data 
+
+goals:
+1. Explore a more basic sorting algorithm  
+2. Explore a more complex sorting algorithm 
+3. See where to learn more 
+
+there are 3-4 basic sorts that are not efficient but they are easy enough to write 
+
+Write a function that rearranges items in a collection in some kind of order 
+sorting numbers
+namjes
+moveis by release year
+movies based on revenue 
+
+regardless of the actual comparison that we are making we are making one and sorting based off of that comparison 
+
+there are many approaches 
+
+why care?
+long term area of computer science study
+great place to understand run time 
+great place to learn algo design 
+common interview questions 
+
+Why are there different algorithsm?
+
+Different runtimes: O(n^2), O(n log n)
+within each algorithm, there are usually types of datasets that one is horrendously slow at and some where it is very fast at 
+there are tradeoffs 
+some of them take more space complexity 
+
+some perform better with different input 
+
+toptal.com 
+
+is a fun website that shows different datasets and the efficiency of the sorting 
+
+Shows the different kinds of sorting 
+
+____________________________________________
+Simple Algorithms 
+____________________________________________
+
+Lets take a look at bubble sort 
+
+The largest values bubble up to the top 
+
+we will see that the largest values go to the end assuming we are looking for the highest value 
+
+bubble sort works by taking the first element and comparing it to the next one 
+
+this is the basis of it 
+
+and we repeat this process over and over 
+we only need to repeat it one fewer times then the length of the array once the biggest value is in place 
+not very efficient 
+
+Bubble Sort pseudo code 
+Loop with i from end of array towards beginning 
+    - loop with j frin the bbeginning until i - 1 
+    if arr[j] is greater than arr[j+1] swap thos etwo values!
+return the sorted array 
+
+this technique is called bubble sort!
+
+____________________________________________
+Writing Bubble Sort 
+____________________________________________
+
+Lets implement the bubble sort 
+
+function bubbleSort(arr){
+    for(let i = 0; i < arr.length; i++){
+        // take whatever element is at i and compare it to the element at i + 1
+        if(arr[i] > arr[i+1]){
+            let temp = arr[i];
+            arr[i] = arr[i+1];
+            arr[i+1]= temp;
+        }
+        console.log(arr)
+        // for(let j = 0; j < arr.length; j++){
+
+        // }
+    }
+}
+
+bubbleSort([45,6,7,23,1,19]);
+
+without the nested loop we are only moving one value 
+
+(6) [6, 45, 7, 23, 1, 19]
+VM40:9 (6) [6, 7, 45, 23, 1, 19]
+VM40:9 (6) [6, 7, 23, 45, 1, 19]
+VM40:9 (6) [6, 7, 23, 1, 45, 19]
+VM40:9 (6) [6, 7, 23, 1, 19, 45]
+VM40:9 (6) [6, 7, 23, 1, 19, 45]
+
+but what we want to do is move it with each value 
+
+so we need a nested loop 
+
+function bubbleSort(arr){
+    for(let i = 0; i < arr.length; i++){
+        for(let j = 0; j < arr.length; j++){
+            console.log(arr)
+            if(arr[j] > arr[j+1]){
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1]= temp;
+            }
+        }
+        // take whatever element is at i and compare it to the element at i + 1
+        
+        
+        
+    }
+}
+
+bubbleSort([45,6,7,23,1,19]);
+
+
+problem with this is that its going to run a ton of times even after we finished sorting the array 
+
+
+when that first outer loop finishes, it is going to run several times 
+
+function bubbleSort2(arr){
+    for(let i = 0; i < arr.length; i++){
+        // this is the magic line that subtracts from how many we search based on the amount of sorted values already in the correct positions 
+        // we end up with a decerementing number of inner lops 
+        for(let j = 0; j < arr.length-i; j++){
+            console.log(arr)
+            if(arr[j] > arr[j+1]){
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1]= temp;
+            }
+        }
+        // take whatever element is at i and compare it to the element at i + 1
+        
+        
+        
+    }
+}
+
+
+colt does a counter in it 
+
+so we get 36 for the first time and 21 for the second bubble sort which is like a 30 percent difference 
+
+this is a pretty big optimization
+
+we could add another one 
+if we do a whole iteration without swapping something then we dont need to swap anymore 
+
+we can create a loop that checks if something is swapping
+if swapped then we continue otherwise we are done 
+
+____________________________________________
+Bubble Sort optimization
+____________________________________________
+
+function bubbleSort3(arr){
+    for(let i = 0; i < arr.length; i++){
+        // this is the magic line that subtracts from how many we search based on the amount of sorted values already in the correct positions 
+        // we end up with a decerementing number of inner lops 
+        let swapped = false;
+        for(let j = 0; j < arr.length-i; j++){
+            console.log(arr)
+            if(arr[j] > arr[j+1]){
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1]= temp;
+                swapped = true;
+            }
+        }
+        if(!swapped) break;
+        // take whatever element is at i and compare it to the element at i + 1
+        
+        
+        
+    }
+    return arr;
+}
+
+adds in the swapper variable to check if we have swapped anything in the array otherwise we break out of it 
+
+
+____________________________________________
+Quadratic Sorts 
+____________________________________________
+Bubble sort is quadraticlly sorted 
+
+if the data is nearly sorted, Bubble sort is almost O(n)
+
+if it isnt then it is quadratic 
+
+if the data is opposite and its flipped and its reversed and its sorted Bubble sort is not going to have a good time 
+
+Simple and fun to tinker with 
+
+Other common quadratic sorts 
+selection sort 
+searches for the smallest value and putting it in the correct spot , building it from the beginning 
+we are not swapping, we are checking for the min and then swapping each time 
+
+fairly easy to implement 
+
+insertion sort 
+
+we find the exact spot for one element and then we put it in that spot 
+
+we are updating the sorted contents as needed each time we add a new element from the back part of the array
+we are not scanning the whole array, we are taking each next value and then dealing with the data we have already gone through 
+
+insertion sort is faster than bubble sort when our data is nearly sorted 
+
+we are going to see some better sorts that are not quadratic 
+
+____________________________________________
+Intro to Merge Sort 
+____________________________________________
+Intermediate Sorting Algorithms 
+
+The algorithms that we have learned so far
