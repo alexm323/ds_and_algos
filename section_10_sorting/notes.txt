@@ -272,3 +272,174 @@ we want to write a function that will merge two sorted arrays
 and return a new array with all elements in sort order 
 
 Should run in O(n+m) time/space and be pure
+
+Merging arrays pseudo
+
+Create empty OUT array 
+
+Start pointers at beginnings of arrays a and b 
+
+if A value <= B value, push a value to OUT and increase A pointer 
+else push B value to OUT and increase B pointer 
+
+Once we exhaust one array, push all remaining values from other array 
+
+function merge(arr1,arr2){
+    //create an array where we will push our results out to 
+    let results = [];
+    //create two pointers that we use to increment along the arrays 
+    let i = 0;
+    let j = 0;
+    // going to compare the values at these arrays 
+    //this runs while there are still values to iterate through
+    while(i < arr1.length && j < arr2.length){
+        compares the values at whatever index they are currently at and pushes the value into the results array
+        if(arr1[i] < arr2[j]){
+            results.push(arr1[i]);
+            i++;
+        }else{
+            results.push(arr2[j]);
+            j++;
+        }
+    }
+    //only one of these will ever run , when we exhaust one of the arrays we will get to the point where we just need to push the rest of a whole array 
+
+    while(i < arr1.length){
+        results.push(arr1[i]);
+        i++;
+    }
+    while(j < arr2.length){
+        results.push(arr2[j]);
+        j++;
+    }
+    return results;
+
+}
+
+
+so this only works with sorted arrays and this is basically linear time because it depends on the length of the array scale
+
+____________________________________________
+Implementing a merge sort 
+____________________________________________
+So we have our merge function working so now we want to do the sorting 
+
+Recursively :
+    split array into halves until you have arrays that have a length of 0 or 1 
+    merge split arrays and return the merged and sorted array 
+
+we are going to split it up as many times as needed to get it to the base case 
+
+function mergeSort(arr){
+    //base case 
+    if(arr.length <= 1) return arr;
+    const mid = Math.floor(arr.length/2);
+    const left = mergeSort(arr.slice(0,mid));
+    const right  =  mergeSort(arr.slice(mid));
+    return merge(left,right);
+    //typical case
+
+}
+
+we call it Recursively to keep slicing up the array 
+this is sort of like divide and conquer 
+
+____________________________________________
+Choosing a Sort
+____________________________________________
+Merge is one of a couple of sorting algorithms that run in the fastest possible time from the comparative sorting algos 
+
+the merge sort is at O(n log n)
+
+sorting is still expensive 
+one thing that is worth bringing up is the space complexity 
+
+we have to make additional arrays to hold the data 
+if you are working in super large datasets it might come up but basically never will otherwise 
+
+Choosing an algorithm 
+
+Performance for you requirements 
+    -for small n, simple sorts can be faster 
+    - Merge sort does very well on a linked list (if you dont need random access then this can perform well)
+    -runtime 
+    -Likely structure of your data 
+        -random
+        almost reversed
+        almost sorted 
+        many duplicates 
+
+adaptive sorting algorithm,s 
+
+adaptive sorts examine input data and can 
+choose underlying soprting algorithm to use 
+switch between algorithms during same sort 
+
+example starting sorting with merge sort 
+
+What do python and JS use?
+
+Javascript:
+    Chrome and node: "Timsort", an adaptive Merge Sort/Insertion Sort
+    Firefox: Merge Sort 
+Python:
+    "Timsort
+
+there is usually some kind of merge sort algorithm for most languages 
+some languages will look at the type of data that you are trying to sort through 
+
+____________________________________________
+Assorted sorting topics 
+____________________________________________
+
+Comparators 
+Javascript built in sort method accepts optional comparator functions 
+
+numeric sorts 
+we can bass in a callback to tell javascript what we are trying to sort 
+
+we can sort by name property of objects 
+
+Stable Sorts 
+
+if we have duplicate items that have a property like priortity 
+if there is a tie we want to make sure that they get the same order everytime 
+
+merge sort is stable 
+something like selection sort is not 
+
+most of the sorting algorithms will be stable and are predicatable 
+
+collations 
+does lowercase a sort before or after uppercase Z 
+two strings compare in a language is controlled by their collation
+
+There are some non-comparative sorting algorithms 
+some sorts are not comparative 
+there is a sort called 
+
+Radix Sort 
+only works for sorting numbers 
+creates buckets based on the lowest number 
+and sorthing them into buckets based o0n that last number 
+then we repeat the process for the next digit over 
+
+there is no comparative 
+radix sort is actually faster 
+
+What do you jneed to know?
+
+Best comparative sort is O(n log n)
+Sorting in JS
+    How to use .sort() method 
+    remember JS sorting is lexicographic , not numeric, by default 
+    how to write a comparator function 
+
+How to implement Merge, insertion, and quicksort 
+
+there are great tutorials online on how to implement these 
+it is worth being able to discuss 
+
+take a look at quicksort 
+Timsort is another good adapative stable sorting algorithm
+
