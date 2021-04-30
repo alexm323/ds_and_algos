@@ -1,0 +1,175 @@
+DS and Algorithms Wrapup
+_________________________________________________________
+
+Intro to Heaps
+_________________________________________________________
+
+We have seen a lot of stuff around data structures and algorithms 
+
+traversing all these data structures and all kinds of crazy stuff 
+
+and there are still topics we have not covered 
+
+goals:
+1. overiew of heaps 
+2. lightly introduce other DSAs
+3. What to focus on 
+
+Heap 
+
+The idea of a priority queue, where we can add things in and remove things but we can also add in priority 
+what is the highest number priority 
+
+an ER triage 
+we can add them in any order but we need to handle the priority 
+
+there is a max heap and min heap 
+
+if it is a max heap , it means that the parent node needs to be bigger than the rest of the children 
+this sounds kind of like a tree except in those cases, left is smaller and right is bigger 
+in a heap the height is actually relevant 
+
+the maximum node in the entire heap is the root node 
+when we implement a heap we make sure to keep it as compact as possible 
+dont need to create additional branches 
+
+a heap is just a tree, typically with a binary tree and there is a heap property that dictates the relationship between a parent and child 
+
+the root of the true will be the smallest value 
+as we insert things in , based on the rule like lets say max number size then it will reorganize and float up to the top 
+
+it is a tree data structure with some key rule that dictates all the relationship
+in a max heap the parent node will be bigger than the rest of the children 
+
+_________________________________________________________
+Inserting into a heap 
+_________________________________________________________
+what is the logic for when we want to inser tsomething 
+
+complete max binary heap 
+
+complete filled top to bottom and left to right 
+max - each parent is greater than the children 
+binary - can at most have two children 
+heap - tree with rul between parent/children 
+
+Adding Item 
+
+Add at bottom right 
+always fill in the same order 
+
+then we swap upward until we are in the correct spot 
+
+we look at the parent and swap , look at the parent and swap 
+
+we know that everything below the node will be less than 90 
+but we cannot confirm that the children are right away going to be the 2nd highest number 
+we cannot say this side vs that side
+
+_________________________________________________________
+Removeing from a heap 
+_________________________________________________________
+Highest priority item is the top of the tree 
+if we just remove it , our tree wont have a head 
+
+put bottom right node at the top 
+and then we swap downwards 
+
+call this sinking down, vs bubbling up 
+
+when a lower value is up toip and sinks down to the acceptable location in the heap
+_________________________________________________________
+Array vs Heap 
+_________________________________________________________
+
+adding to the top is constant time 
+to remove the top and bottom right is constant time 
+
+swapping up and down limits the run time 
+
+for any number of heaps , the max number of swaps is based on the height of the tree 
+
+the relationship between the height of a tree and the number of node is a logarithmic relationship 
+
+same thing for sinking down 
+heaps are used in general to implement a priority queue 
+
+our first priority queue was an array 
+
+peeking at something in the heap is O(N)
+
+in a giant scale , the run time of O(log n) is a much better implementation a priority queue 
+
+_________________________________________________________
+implementing a heap
+_________________________________________________________
+
+one way to do it is to implement it into an array 
+
+we can store elements in an array because we know each location for a binary heap since we know they can only have two children at most each time 
+
+if we have the index of some element we can use the formulas to find that 
+
+lft   2*i + 1
+right 2*i + 2
+
+this formula makes it easy to find the children 
+
+we are just using an array and doing math to find the stuff 
+
+he has an example of a priority queue class 
+by adding something to the end of our array, by pushing , we are putting it to the bottom right 
+
+
+take a look at the implementation for more 
+
+_________________________________________________________
+trie 
+_________________________________________________________
+
+Tries 
+The name come from reTRIEval 
+
+a special sort of structure 
+used to sort strings usually 
+
+often called prefix trees 
+stores words 
+
+at,cat,cats,cap,cape,car,care 
+we can build this stucture for a the most commonly found terms 
+
+we are going to have paths that dont make a real word 
+in the example it shows a red dot when we have a tree 
+
+can be used to build autocomplete stuff 
+
+the valid words are marked down or annotated 
+
+if you are ever asked about implementing autocomplete , it can be done with a trie 
+especially with a small dataset 
+
+_________________________________________________________
+Bloom Filter 
+_________________________________________________________
+
+they are used all the time in apps and things we constantly visit 
+
+a data structure that uses a hash function to store values 
+quickly answer questions like "is particular item in a collection"
+
+all we really do is ask if something is in there , or add something in there 
+
+we dont store information, we usually store bits 
+
+there is a demo that shows it 
+
+its about flipping bits and as long as a bit is not flipped when we have not all of the right bits in there and we can get some false positives 
+this is a very fast and low data intensive way of implementing a filter like with the medium articles example 
+
+very rarely will say yes when its not in there 
+
+the more space, the fewer false positives 
+it will never say no when the answer is actually yes 
+
+
