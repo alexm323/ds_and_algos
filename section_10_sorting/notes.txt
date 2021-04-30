@@ -229,3 +229,46 @@ ____________________________________________
 Intermediate Sorting Algorithms 
 
 The algorithms that we have learned so far
+they dont scale well at all because of the N^2 , it gets very steep very quickly 
+
+try out bubble sort with 100k elements - will take some time 
+
+O( n log n) is thje fastyest possible runtime 
+
+- for a compartive sort which is what we typically mean 
+- n because you have to touch every item in the list once 
+- log n because best best possible strategy is divide and conquer method 
+- both merge sort and quick sort use this strategy 
+
+this has been proven with a methematical proof no comparatiove sorting algorithm will be faster than O(n log n)
+
+Merge Sort
+
+it is a combination of two things: merging and sorting 
+exploits fact that arrays of 0 or 1 element are always sorted 
+
+strategy:
+decomposing array into smaller arrays of 0 or 1 elements 
+building up a newly sorted array from those 
+
+if we had two sorted arrays
+how do we merge them?
+take the first value and compare them to the first value in the other array 
+
+merging arrays that are sorted is really quick 
+
+with merge sort we take a big array and we break it down toi smaller arrays that is automatically sorted because it has 1 thing or nothing in it 
+
+we are first going to create a merge function that is standalone and then we will implement it with a sort after that 
+
+____________________________________________
+Implementing a merge function 
+____________________________________________
+
+there are two components 
+first we need to split our parent into smaller sub arrays and then we merge them together 
+
+we want to write a function that will merge two sorted arrays 
+and return a new array with all elements in sort order 
+
+Should run in O(n+m) time/space and be pure
